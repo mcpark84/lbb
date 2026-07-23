@@ -86,6 +86,17 @@ bash docker_setup.sh      # re-pulls latest and restarts the container
 source ~/.bashrc
 ```
 
+### (Optional) Result visualizer
+
+To view benchmark results in a browser, install the Inference Benchmark Visualizer
+(also image-based). Point its `DATA_DIR` at the same directory as LBB's `result_dir`.
+
+```bash
+git clone https://github.com/mcpark84/ibv.git
+cd ibv
+bash docker_setup.sh      # pulls danmcpark84/ibv:v1.0 and starts it (default port 1229)
+```
+
 ---
 
 ## Quick Start
