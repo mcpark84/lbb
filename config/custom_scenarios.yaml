@@ -1,0 +1,126 @@
+# LBB Custom Scenario Configuration Example
+# This file demonstrates how to add and modify scenarios.
+# Any file matching the *_scenarios.yaml pattern is loaded automatically.
+# (Verify with: lbb list scenarios)
+
+# ==========================================
+# 1. File-level global settings (optional)
+# ==========================================
+
+# [Optional] Default result directory for all scenarios in this file
+# (default: results/benchmark_TIMESTAMP/...)
+# Results from all scenarios in this file are saved under this path.
+# Accepts absolute paths or paths relative to the project root (lbb/)
+# results_dir: "results/custom_benchmark"
+
+# [Optional] Default target server for all scenarios in this file
+# (default: paths.yaml or CLI arguments)
+# All scenarios in this file will run against this server.
+# server:
+#   host: "localhost"
+#   port: 8000
+
+# [Optional] Default model info for all scenarios in this file
+# (default: paths.yaml or CLI arguments)
+# model_path: "/path/to/my/model"
+# served_model_name: "my-custom-model"  # set to None to omit this option
+
+scenarios:
+  # ==========================================
+  # Example 1: Single-turn scenario (all options)
+  # ==========================================
+  - name: example_single_turn_full_options
+    type: single
+    description: "Custom single-turn test example (all available options included)"
+
+    # [Optional] Backend (default: vllm)
+    # Supported: vllm, sglang, sglang-oai, lmdeploy, etc.
+    backend: vllm
+
+    # [Optional] Override result directory for this scenario
+    # Takes precedence over the file-level setting.
+    # results_dir: "/tmp/example_single_test_output"
+
+    # [Optional] Override server for this scenario
+    # Takes precedence over the file-level setting.
+    # server:
+    #   host: "192.168.1.100"
+    #   port: 8000
+
+    # [Optional] Override model info for this scenario
+    # model_path: "/another/model/path"
+    # served_model_name: "another-model"
+
+    parameters:
+      # --------------------------------
+      # Length parameters (in tokens)
+      # --------------------------------
+      prompt_length: 1024       # System prompt length (Input Sequence Length)
+      question_len: 128         # User question length (total input = prompt_length + question_len)
+      output_len: 128           # Model output length (Output Sequence Length)
+
+      # --------------------------------
+      # Load generation parameters
+      # --------------------------------
+      max_concurrency: 4        # Maximum concurrent requests
+
+      # Total requests = num_groups * prompts_per_group
+      num_groups: 1             # Number of repeating groups
+      prompts_per_group: 10     # Prompts (requests) per group
+
+      # Request rate limit (requests per second; inf = unlimited)
+      request_rate: inf
+
+      # --------------------------------
+      # Other settings
+      # --------------------------------
+      # Number of turns (always 1 for single-turn)
+      num_turns: 1
+
+      # Warmup requests (sent before benchmark, excluded from results)
+      warmup_requests: 5
+
+  # ==========================================
+  # Example 2: Multi-turn scenario (Chat / Interactive)
+  # ==========================================
+  - name: example_multi_turn_chat
+    type: multi
+    description: "Custom multi-turn (chat) test example"
+
+    parameters:
+      # --------------------------------
+      # Multi-turn length settings
+      # --------------------------------
+      initial_prompt_length: 1024  # System prompt length for the first turn
+      increment_per_turn: 1024     # Context length added each turn (simulates conversation history)
+
+      # (Reference) Expected prompt length at last turn = initial + (num_turns-1)*increment
+      # max_prompt_length: 4096
+
+      question_len: 128            # User question length per turn
+      output_len: 128              # Model response length per turn
+
+      num_turns: 4                 # Total conversation turns (round-trips)
+
+      # --------------------------------
+      # Load generation parameters
+      # --------------------------------
+      max_concurrency: 2
+      num_groups: 1
+      prompts_per_group: 4
+      request_rate: inf
+      warmup_requests: 2
+  - name: rerun_test
+    type: single
+    description: Single-turn (ISL=0.1K, OSL=0.1K), Concurrency=4
+    parameters:
+      prompt_length: 100
+      question_len: 28
+      output_len: 128
+      num_turns: 1
+      num_groups: 1
+      prompts_per_group: 4
+      max_concurrency: 4
+      request_rate: inf
+    results_dir: "../result_dir_test"
+    backend: vllm

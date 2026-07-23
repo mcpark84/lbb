@@ -1,0 +1,12 @@
+.DS_Store
+
+# Runtime state (bind-mounted into the container, created by docker_setup.sh)
+logs/
+result_data/
+
+# Local live config (copy from paths.yaml.sample; may contain secrets)
+config/paths.yaml
+
+# Large generated experiment datasets
+# (build inside the container: python3 /app/scripts/build_openai_trajectories.py --seed 42)
+config/swe_openai_*.json

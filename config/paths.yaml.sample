@@ -1,0 +1,12 @@
+visualizer: 127.0.0.1:1229
+sglang_dir: /app/scripts
+model_path: /aicm_data/hub/models--Qwen--Qwen3-30B-A3B/snapshots/<snapshot-hash>
+served_model_name: Qwen/Qwen3-30B-A3B
+model_fp: fp16
+result_dir: /result_data
+server:
+  host: 127.0.0.1
+  port: 8000
+deployment: {'type': 'aggregation', 'replica': 1, 'tp': 2}
+dgd_name: <your-dgd-name>
+slack_webhook: <optional-slack-webhook-url>

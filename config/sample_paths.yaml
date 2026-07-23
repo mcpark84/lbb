@@ -1,0 +1,9 @@
+visualizer: 127.0.0.1:1229
+sglang_dir: /app/scripts
+model_path: Qwen/Qwen3-0.6B
+served_model_name: Qwen/Qwen3-0.6B
+model_fp: bf16
+result_dir: /result_data
+server:
+  host: 127.0.0.1
+  port: 8000

@@ -1,0 +1,48 @@
+scenarios:
+  # Tool-calling agent trace (Mooncake toolagent workload)
+  # Replays real tool-use agent traffic from the Mooncake dataset.
+  # Requires: --backend sglang, internet access for trace download on first run.
+  # Note: --request-rate is ignored; trace timestamps control scheduling.
+
+  - name: agentic_toolagent_conc32
+    type: agentic
+    description: "Tool-calling agent trace (Mooncake toolagent), concurrency=32"
+    backend: sglang
+    parameters:
+      dataset_name: mooncake
+      mooncake_workload: toolagent
+      mooncake_slowdown_factor: 1.0
+      mooncake_num_rounds: 1
+      use_trace_timestamps: true
+      random_output_len: 256
+      num_requests: 1000
+      max_concurrency: 32
+
+  - name: agentic_toolagent_conc64
+    type: agentic
+    description: "Tool-calling agent trace (Mooncake toolagent), concurrency=64"
+    backend: sglang
+    parameters:
+      dataset_name: mooncake
+      mooncake_workload: toolagent
+      mooncake_slowdown_factor: 1.0
+      mooncake_num_rounds: 1
+      use_trace_timestamps: true
+      random_output_len: 256
+      num_requests: 1000
+      max_concurrency: 64
+
+  # Multi-turn conversation trace (Mooncake conversation workload)
+  - name: agentic_conversation_conc32
+    type: agentic
+    description: "Multi-turn conversation trace (Mooncake conversation), 3 rounds, concurrency=32"
+    backend: sglang
+    parameters:
+      dataset_name: mooncake
+      mooncake_workload: conversation
+      mooncake_slowdown_factor: 1.0
+      mooncake_num_rounds: 3
+      use_trace_timestamps: true
+      random_output_len: 256
+      num_requests: 1000
+      max_concurrency: 32

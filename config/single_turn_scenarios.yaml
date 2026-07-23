@@ -1,0 +1,66 @@
+scenarios:
+- name: single_turn_1k_1k_conc4
+  type: single
+  description: Single-turn (ISL=1K, OSL=1K), Concurrency=4
+  parameters:
+    prompt_length: 1024
+    question_len: 128
+    output_len: 1024
+    num_turns: 1
+    num_groups: 10
+    prompts_per_group: 1
+    max_concurrency: 4
+    request_rate: inf
+  backend: vllm
+- name: single_turn_1k_1k_conc8
+  type: single
+  description: Single-turn (ISL=1K, OSL=1K), Concurrency=8
+  parameters:
+    prompt_length: 1024
+    question_len: 128
+    output_len: 1024
+    num_turns: 1
+    num_groups: 10
+    prompts_per_group: 1
+    max_concurrency: 8
+    request_rate: inf
+  backend: vllm
+- name: single_turn_1k_1k_conc16
+  type: single
+  description: Single-turn (ISL=1K, OSL=1K), Concurrency=16
+  parameters:
+    prompt_length: 1024
+    question_len: 128
+    output_len: 1024
+    num_turns: 1
+    num_groups: 10
+    prompts_per_group: 1
+    max_concurrency: 16
+    request_rate: inf
+  backend: vllm
+- name: continuous_very_low_0_5rps
+  type: single
+  description: Sustained load (ISL=1K, OSL=1K), 0.5 req/s, Concurrency=1, ~100s
+  parameters:
+    prompt_length: 1024
+    question_len: 128
+    output_len: 1024
+    num_turns: 1
+    num_groups: 50
+    prompts_per_group: 1
+    max_concurrency: 1
+    request_rate: 0.5
+  backend: vllm
+- name: continuous_low_1rps
+  type: single
+  description: Sustained load (ISL=1K, OSL=1K), 1 req/s, Concurrency=2, ~100s
+  parameters:
+    prompt_length: 1024
+    question_len: 128
+    output_len: 1024
+    num_turns: 1
+    num_groups: 100
+    prompts_per_group: 1
+    max_concurrency: 2
+    request_rate: 1.0
+  backend: vllm
