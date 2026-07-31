@@ -66,7 +66,10 @@ mkdir -p ~/.local/bin
 cat > ~/.local/bin/lbb << 'WRAPPER_EOF'
 #!/bin/bash
 _tty="-i"
-[ -t 0 ] && _tty="-it"
+# Allocate a pty only when BOTH stdin and stdout are terminals. When stdout is a
+# pipe (e.g. `eval "$(lbb completion bash)"` in ~/.bashrc), a pty's ONLCR turns
+# every \n into \r\n and the captured output is no longer parseable.
+[ -t 0 ] && [ -t 1 ] && _tty="-it"
 if [ -n "$_LBB_COMPLETE" ]; then
   exec docker exec \
     -e "_LBB_COMPLETE=$_LBB_COMPLETE" \
