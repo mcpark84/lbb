@@ -28,7 +28,9 @@ MOUNT_ARGS=(
   -v "$HOME:$HOME"
 )
 if [ -d ~/.kube ]; then
-  MOUNT_ARGS+=(-v ~/.kube:/root/.kube)
+  # The container runs as a non-root user with HOME=/home/ubuntu (see image),
+  # so kubectl reads /home/ubuntu/.kube/config — not /root/.kube.
+  MOUNT_ARGS+=(-v ~/.kube:/home/ubuntu/.kube)
 else
   echo "  (~/.kube not found — skipping kubeconfig mount)"
 fi
